@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import AddTaskForm from "./AddTaskForm"
 import SearchTaskForm from "./SearchTaskForm"
 import Todoinfo from "./Todoinfo"
 import Todolist from "./Todolist"
+import Button from "./Button"
 
 const Todo = () => {
     const [tasks, setTasks] = useState(() => {
@@ -20,6 +21,10 @@ const Todo = () => {
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
+
+    const newTaskInputRef = useRef(null)
+    const firstIncompleteTaskRef = useRef(null)
+    const firstIncompleteTaskId = tasks.find(({ isDone }) => !isDone)?.id
 
     const deleteAllTasks = () => {
         const isConfirmed = confirm('Are you shure you want to delete all?')
@@ -58,12 +63,17 @@ const Todo = () => {
             setTasks([...tasks, newTask])
             setNewTaskTitle('')
             setSearchQuery('')
+            newTaskInputRef.current.focus()
         }
     }
 
     useEffect( ()  => {
         localStorage.setItem('tasks', JSON.stringify(tasks))
     }, [tasks])
+
+    useEffect( () => {
+        newTaskInputRef.current.focus()
+    },[])
 
     const clearSearchQuery = searchQuery.trim().toLowerCase()
     const filteredTasks = clearSearchQuery.length > 0 
@@ -75,24 +85,32 @@ const Todo = () => {
         <div className="todo">
             <h1 className="todo__title">To Do List</h1>
             <AddTaskForm 
-            addTask={addTask}
-            newTaskTitle={newTaskTitle}
-            setNewTaskTitle={setNewTaskTitle}
+                addTask={addTask}
+                newTaskTitle={newTaskTitle}
+                setNewTaskTitle={setNewTaskTitle}
+                newTaskInputRef={newTaskInputRef}
             />
             <SearchTaskForm 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
             />
             <Todoinfo 
                 total={tasks.length}
                 done={tasks.filter(({ isDone }) => isDone).length}
                 onDeleteAllButtonClick={deleteAllTasks}
             />
+            <Button onClick={() => firstIncompleteTaskRef.current?.scrollIntoView( { behavior: 'smooth'} )}
+                >
+                    Show first incomplete task
+                    </Button>
             <Todolist 
             tasks={tasks}
             filteredTasks={filteredTasks}
+            firstIncompleteTaskRef={firstIncompleteTaskRef}
+            firstIncompleteTaskId={firstIncompleteTaskId}
             onDeleteTaskButtonClick={deleteTask}
             onTaskCompleteChange={toggleTaskComplete}
+
             />
     </div>
     )
