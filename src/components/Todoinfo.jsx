@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 const Todoinfo = (props) => {
     const {
         total,
@@ -24,4 +26,4 @@ const Todoinfo = (props) => {
     )
 }
 
-export default Todoinfo
+export default memo(Todoinfo)
