@@ -1,27 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-// import useTasksLocalStorage from './useTasksLocalStorage'
+import useTasksLocalStorage from "./useTasksLocalStorage"
 
-const useTasks= () => {
+const useTasks = () => {
+    const {
+        savedTasks,
+        saveTasks,
+    } = useTasksLocalStorage()
     
-        const [tasks, setTasks] = useState(() => {
-            const savedTasks = localStorage.getItem('tasks')
-    
-            if (savedTasks) {
-                return JSON.parse(savedTasks)
-            }
-    
-            return [
+        const [tasks, setTasks] = useState( savedTasks ?? [
                 {id: 'task-1', title: 'Дописать CreateX', isDone: false},
                 {id: 'task-2', title: 'Изучить React', isDone: true},
-            ]
-        })
+            ])
     
         const [newTaskTitle, setNewTaskTitle] = useState('')
         const [searchQuery, setSearchQuery] = useState('')
     
         const newTaskInputRef = useRef(null)
-        const firstIncompleteTaskRef = useRef(null)
-        const firstIncompleteTaskId = tasks.find(({ isDone }) => !isDone)?.id
     
         const deleteAllTasks = useCallback(() => {
             const isConfirmed = confirm('Are you shure you want to delete all?')
@@ -64,7 +58,7 @@ const useTasks= () => {
         }, [newTaskTitle])
     
         useEffect( ()  => {
-            localStorage.setItem('tasks', JSON.stringify(tasks))
+            saveTasks(tasks)
         }, [tasks])
     
         useEffect( () => {
@@ -83,8 +77,6 @@ const useTasks= () => {
         return {
             tasks,
             filteredTasks,
-            firstIncompleteTaskRef,
-            firstIncompleteTaskId,
             deleteTask,
             deleteAllTasks,
             toggleTaskComplete,
