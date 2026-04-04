@@ -29,7 +29,7 @@ const tasksAPI = {
     },
 
     toggleComplete: (id, isDone) => {
-        returnfetch(`${URL}/${id}`, {
+        return fetch(`${URL}/${id}`, {
                 method: 'PATCH',
                 headers,
                 body: JSON.stringify({isDone})
@@ -37,4 +37,6 @@ const tasksAPI = {
     },
 }
 
+
+// API + fetch delete push and metods
 export default tasksAPI
