@@ -37,6 +37,4 @@ const tasksAPI = {
     },
 }
 
-
-// API + fetch delete push and metods
 export default tasksAPI
