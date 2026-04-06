@@ -1,1 +1,6 @@
-{tasks:[{title:'123',isDone:true,id:'KnwjU_4kuOk'},{title:'11',isDone:true,id:'ZGTlmf1MnuM'},{title:'1',isDone:true,id:'bDzj_c9xgPQ'},{title:'1',isDone:false,id:'xJvYRCk2yc0'},{title:'2',isDone:false,id:'5I7q13pV3Tk'},{title:'3',isDone:false,id:'VMmyRQfT71Q'}],$schema:'./node_modules/json-server/schema.json'}
+{tasks:[
+    {id:'5f7c',title:'1',isDone:false},
+    {id:'9b1e',title:'2',isDone:false},
+    {id:'f269',title:'3',isDone:false},
+    {id:'123',title:'Example',isDone:false},    
+]}
