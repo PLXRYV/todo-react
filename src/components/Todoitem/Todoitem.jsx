@@ -1,6 +1,7 @@
-import { memo, useContext } from 'react'
+import { memo, useContext, useRef } from 'react'
 import { TasksContext } from '../../context/TasksContext'
 import RouterLink from '../RouterLink/RouterLink'
+import useCombinedRefs from '../../hooks/useCombinedRefs'
 import styles from './TodoItem.module.scss'
 
 const Todoitem = (props) => {
@@ -18,9 +19,25 @@ const Todoitem = (props) => {
         toggleTaskComplete,
     } = useContext(TasksContext)
 
+    const animationRef = useRef(null)
+    const combinedRef = useCombinedRefs(
+        id === firstIncompleteTaskId ? firstIncompleteTaskRef : null,
+        animationRef
+    )
+
+    const handleClick = () => {
+        animationRef.current?.classList.add(styles.isDisappearing)
+
+        setTimeout(() => {
+            deleteTask(id)
+        }, 400)
+
+        deleteTask(id)
+    }
+
     return (
         <li className={`${styles.todoItem} ${className}`} 
-        ref={id === firstIncompleteTaskId ? firstIncompleteTaskRef : null} 
+        ref={combinedRef} 
         >
         <input
             className={styles.checkbox}
@@ -44,7 +61,7 @@ const Todoitem = (props) => {
             className={styles.deleteButton}
             aria-label="Delete"
             title="Delete"
-            onClick={() => deleteTask(id)}
+            onClick={handleClick}
         >
             <svg
                 width="20"
