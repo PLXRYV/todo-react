@@ -1,7 +1,8 @@
-import { memo, useContext } from 'react'
+import { memo, useContext, useRef } from 'react'
 import { TasksContext } from '../../context/TasksContext'
 import RouterLink from '../RouterLink/RouterLink'
 import styles from './TodoItem.module.scss'
+
 
 const TodoItem = (props) => {
   const {
@@ -16,11 +17,16 @@ const TodoItem = (props) => {
     firstIncompleteTaskId,
     deleteTask,
     toggleTaskComplete,
+    disappearingTaskId,
   } = useContext(TasksContext)
 
   return (
     <li
-      className={`${styles.todoItem} ${className}`}
+      className={`
+        ${styles.todoItem}
+        ${className}
+        ${disappearingTaskId === id ? styles.isDisappearing : ''}
+        `}
       ref={id === firstIncompleteTaskId ? firstIncompleteTaskRef : null}
     >
       <input
