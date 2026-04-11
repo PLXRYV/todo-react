@@ -18,6 +18,7 @@ const TodoItem = (props) => {
     deleteTask,
     toggleTaskComplete,
     disappearingTaskId,
+    appearingTaskId,
   } = useContext(TasksContext)
 
   return (
@@ -26,6 +27,7 @@ const TodoItem = (props) => {
         ${styles.todoItem}
         ${className}
         ${disappearingTaskId === id ? styles.isDisappearing : ''}
+        ${appearingTaskId === id ? styles.isAppearing : ''}
         `}
       ref={id === firstIncompleteTaskId ? firstIncompleteTaskRef : null}
     >
